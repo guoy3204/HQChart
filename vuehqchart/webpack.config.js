@@ -5,17 +5,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
 const glob = require('glob')
 
-const pageEntry=glob.sync('./src/pages/*').reduce((prev,curr)=>{
+const pageEntry = glob.sync('./src/pages/*').reduce((prev, curr) => {
   prev[curr.slice(12)] = curr;
   return prev;
-},{})
-const pageHtmlWebpackPlugin=glob.sync('./src/pages/*').map(item=>{
-  var pageName=item.slice(12)
+}, {})
+const pageHtmlWebpackPlugin = glob.sync('./src/pages/*').map(item => {
+  var pageName = item.slice(12)
   return new HtmlWebpackPlugin({
-    filename: pageName+'.html',
+    filename: pageName + '.html',
     template: 'src/index.html',
-    chunks:[pageName,'vendor'],
-    title:pageName
+    chunks: [pageName, 'vendor'],
+    title: pageName
   })
 })
 
@@ -26,9 +26,9 @@ const publicPath = ''
 
 module.exports = (options = {}) => ({
 
-  entry:Object.assign( {
+  entry: Object.assign({
     vendor: './src/vendor',
-  },pageEntry),
+  }, pageEntry),
   output: {
     path: resolve(__dirname, 'dist'),
     filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
@@ -36,8 +36,7 @@ module.exports = (options = {}) => ({
     // publicPath: options.dev ? '/assets/' : publicPath
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -52,12 +51,12 @@ module.exports = (options = {}) => ({
       },
       {
         test: /\.styl/,
-        use: ['style-loader','css-loader','stylus-loader']
+        use: ['style-loader', 'css-loader', 'stylus-loader']
       },
       {
         test: /\.js$/,
         use: ['babel-loader'],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
